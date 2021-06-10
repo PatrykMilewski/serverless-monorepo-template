@@ -1,0 +1,22 @@
+{
+  "name": "@serverless-monorepo-template/first",
+  "version": "1.0.0",
+  "license": "ISC",
+  "scripts": {
+    "check-types": "tsc",
+    "coverage": "jest --collect-coverage",
+    "deploy": "sls deploy",
+    "package": "sls package",
+    "remove": "sls remove",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@serverless-monorepo-template/common": "1.0.0"
+  },
+  "devDependencies": {
+    "@serverless-monorepo-template/config": "1.0.0",
+    "@types/jest": "26.0.23",
+    "jest": "26.6.3",
+    "typescript": "4.3.2"
+  }
+}

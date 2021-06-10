@@ -1,0 +1,20 @@
+{
+  "name": "@serverless-monorepo-template/config",
+  "version": "1.0.0",
+  "license": "ISC",
+  "files": [
+    "jest.config.js"
+  ],
+  "dependencies": {
+    "@sucrase/jest-plugin": "2.1.0",
+    "@types/jest": "26.0.23",
+    "@types/node": "14.14.31",
+    "jest": "26.6.3",
+    "serverless": "2.45.2",
+    "serverless-esbuild": "1.10.6",
+    "serverless-iam-roles-per-function": "3.1.0",
+    "serverless-plugin-aws-alerts": "1.7.3",
+    "serverless-plugin-resource-tagging": "1.1.0",
+    "serverless-pseudo-parameters": "2.5.0"
+  }
+}

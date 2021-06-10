@@ -1,0 +1,15 @@
+version: 0.2
+
+env:
+  variables:
+    CI: true
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 14
+    commands:
+      - yarn run ci
+  build:
+    commands:
+      - yarn run remove

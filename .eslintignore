@@ -1,0 +1,11 @@
+coverage
+.eslintignore
+.gitignore
+.prettierignore
+.serverless
+node_modules
+dist
+serverless_plugins
+jest.config.js
+babel.config.js
+webpack.config.js

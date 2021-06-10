@@ -1,0 +1,96 @@
+service: first
+
+useDotenv: true
+variablesResolutionMode: 20210219
+configValidationMode: warn
+unresolvedVariablesNotificationMode: error
+
+plugins:
+  - serverless-pseudo-parameters
+  - serverless-esbuild
+  - serverless-plugin-resource-tagging
+  - serverless-plugin-aws-alerts
+  - serverless-iam-roles-per-function
+
+package:
+  individually: true
+
+custom:
+  project: template
+  baseName: ${self:custom.project}-${self:service}-${opt:stage}
+
+  esbuild:
+    platform: node
+    target: node14
+    bundle: true
+    minify: true
+    sourcemap: true
+    keepNames: true
+
+  alerts:
+    prefixTemplate: ${self:custom.baseName}
+    stages:
+      - stag
+      - prod
+    definitions:
+      functionErrors:
+        threshold: 1
+        period: 60
+        treatMissingData: notBreaching
+        okActions:
+          - critical
+        alarmActions:
+          - critical
+    alarms:
+      - functionErrors
+    topics:
+      critical:
+        ok:
+          topic: ${self:custom.baseName}-alarms
+          notifications:
+            - protocol: email
+              endpoint: ${env:EMAIL_FOR_ALARMS}
+        alarm:
+          topic: "arn:aws:sns:#{AWS::Region}:#{AWS::AccountId}:${self:custom.baseName}-alarms"
+
+  serverless-iam-roles-per-function:
+    defaultInherit: true
+
+provider:
+  name: aws
+  stage: ${opt:stage}
+  stackName: ${self:custom.baseName}
+  runtime: nodejs14.x
+  memorySize: 128
+  timeout: 30
+  lambdaHashingVersion: 20201221
+  tracing:
+    lambda: true
+  deploymentBucket:
+    blockPublicAccess: true
+  logRetentionInDays: 30
+  stackTags:
+    STACK: "${self:custom.baseName}"
+    SERVICE: "${self:service}"
+    PROJECT: "${self:custom.project}"
+    STAGE: "${opt:stage}"
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+    DEBUG: "false"
+    NODE_OPTIONS: "--enable-source-maps"
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - xray:PutTelemetryRecords
+            - xray:PutTraceSegments
+          Resource: "*"
+
+functions:
+  passing:
+    name: ${self:custom.baseName}-passing
+    handler: src/passing.handler
+  failing:
+    name: ${self:custom.baseName}-failing
+    handler: src/failing.handler
