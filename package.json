@@ -7,7 +7,6 @@
     "stacks/*"
   ],
   "scripts": {
-    "generate-graph": "npx lerna-dependency-graph -o ./dependency-graph.jpg -f jpg",
     "ci": "yarn install --frozen-lockfile",
     "ci:check-all": "npm-run-all --print-label --parallel audit test check-types eslint",
     "test": "lerna run test --stream --parallel --",
@@ -44,7 +43,6 @@
     "husky": "6.0.0",
     "jest": "27.0.4",
     "lerna": "4.0.0",
-    "lerna-dependency-graph": "1.1.0",
     "npm-run-all": "4.1.5",
     "prettier": "2.3.1",
     "yarn-audit-ci": "1.2.0",
